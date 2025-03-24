@@ -1,1 +1,43 @@
+name: Angular build test
 
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Angular App
+        run: npm run build 
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "zehntech"
+          git config --global user.email "test@zehntech.com"
+
+      - name: Commit and Push Build Artifacts
+        run: |
+          rm -rf dist/*
+          mv ./dist/* ./dist/
+          git add dist
+          git commit -m "Angular Build test"
+          git push origin main
