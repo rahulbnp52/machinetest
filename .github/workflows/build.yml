@@ -38,7 +38,7 @@ jobs:
         run: |
          mkdir -p dist
           rm -rf dist/*
-          mv ./dist/* ./dist/
+          mv dist/* ./dist/
           git add dist
           git commit -m "Angular Build test"
           git push origin main
